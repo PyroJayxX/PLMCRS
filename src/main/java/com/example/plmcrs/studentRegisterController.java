@@ -18,6 +18,8 @@ public class studentRegisterController implements Initializable {
     @FXML
     private Label lblStdntNum;
     @FXML
+    private Label lblDate;
+    @FXML
     private TextField txtSearch;
     @FXML
     private TableView<ObservableList<String>> subjectTblView;
@@ -63,29 +65,31 @@ public class studentRegisterController implements Initializable {
     }
 
     public void tblClick(MouseEvent event) {
-        txtSearch.setText(subjectTblView.getSelectionModel().getSelectedItem().get(2));
+        txtSearch.setText(subjectTblView.getSelectionModel().getSelectedItem().get(3));
     }
 
     public void addSched(ActionEvent event) throws SQLException {
-        tableModel.strBlock = subjectTblView.getSelectionModel().getSelectedItem().get(1);
-        tableModel.strSubjName = subjectTblView.getSelectionModel().getSelectedItem().get(2);
-        tableModel.strSubjCode = subjectTblView.getSelectionModel().getSelectedItem().get(3);
-        tableModel.strDay = subjectTblView.getSelectionModel().getSelectedItem().get(4);
-        tableModel.strTime = subjectTblView.getSelectionModel().getSelectedItem().get(5);
-        tableModel.strRoom = subjectTblView.getSelectionModel().getSelectedItem().get(6);
-        tableModel.strType = subjectTblView.getSelectionModel().getSelectedItem().get(7);
+        tableModel.tblSY = subjectTblView.getSelectionModel().getSelectedItem().get(0);
+        tableModel.tblSem = subjectTblView.getSelectionModel().getSelectedItem().get(1);
+        tableModel.strBlock = subjectTblView.getSelectionModel().getSelectedItem().get(2);
+        tableModel.strSubjName = subjectTblView.getSelectionModel().getSelectedItem().get(3);
+        tableModel.strSubjCode = subjectTblView.getSelectionModel().getSelectedItem().get(4);
+        tableModel.strDay = subjectTblView.getSelectionModel().getSelectedItem().get(5);
+        tableModel.strTime = subjectTblView.getSelectionModel().getSelectedItem().get(6);
+        tableModel.strRoom = subjectTblView.getSelectionModel().getSelectedItem().get(7);
+        tableModel.strType = subjectTblView.getSelectionModel().getSelectedItem().get(8);
         tableModel.addToSched();
     }
 
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         lblStdntNum.setText(userModel.strIDFormat);
+        lblDate.setText(userModel.strDate);
         try {
             tableModel.getSubjectList();
             tableModel.resultSetToTableView(tableModel.tblrs, subjectTblView);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

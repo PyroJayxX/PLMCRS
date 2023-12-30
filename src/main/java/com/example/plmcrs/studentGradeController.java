@@ -34,8 +34,8 @@ public class studentGradeController implements Initializable {
     }
 
     public void cmbGradeSelect(ActionEvent event) throws SQLException {
-            tableModel.sem = String.valueOf(cmbGrade.getValue().charAt(10));
-            tableModel.sy = cmbGrade.getValue().substring(0,9);
+            tableModel.tblSem = String.valueOf(cmbGrade.getValue().charAt(10));
+            tableModel.tblSY = cmbGrade.getValue().substring(0,9);
             tableModel.getStdntGrade();
         if (!tableModel.tblrs.isBeforeFirst()) {
             Mainscreen.popDialogue("No grades to display yet.", "Alert!", "Grades not found.");

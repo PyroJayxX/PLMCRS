@@ -16,7 +16,8 @@ import java.sql.*;
 public class tableModel {
 
     //TableView Variables
-    static String sem, sy, strSearch="%", strSubjCode, strSubjName, strSched, strBlock, strDay, strTime, strRoom, strType;
+    static String strSearch="%", strSubjCode, strSubjName, strBlock,
+            strDay, strTime, strRoom, strType, tblSY, tblSem;
 
     //Database setup
     private static Connection conn;
@@ -30,7 +31,7 @@ public class tableModel {
     }
 
     private static PreparedStatement ps = null;
-    private static ResultSet rs = null;
+
     static ResultSet tblrs = null;
 
     public static void resultSetToTableView(ResultSet rs, TableView<ObservableList<String>> tableView) throws SQLException {
@@ -105,8 +106,8 @@ public class tableModel {
                 "subject_code, description, grade, remark" +
                 " FROM vwgradereport WHERE student_no = ? AND semester = ? AND school_year = ?");
         ps.setString(1, userModel.strIDFormat);
-        ps.setString(2, sem);
-        ps.setString(3, sy);
+        ps.setString(2, tblSem);
+        ps.setString(3, tblSY);
         tblrs = ps.executeQuery();
     }
 
@@ -117,31 +118,88 @@ public class tableModel {
         tblrs = ps.executeQuery();
     }
 
+    public static void getSchedule() throws SQLException{
+        ps = conn.prepareStatement("SELECT * FROM vwschedule WHERE block = ?");
+        ps.setString(1, userModel.strBlock);
+        tblrs = ps.executeQuery();
+    }
+
+    public static void getApprvTblStdntList() throws SQLException {
+        ps = conn.prepareStatement("SELECT Student_No, Last_Name, First_Name, SY, Semester " +
+                "FROM sched_approval");
+        tblrs = ps.executeQuery();
+    }
+
     public static void getApprvTbl() throws SQLException {
         ps = conn.prepareStatement("SELECT subject_code, subject_description, day, time, room, type " +
-                "FROM sched_approval WHERE student_no = ?");
+                "FROM sched_register WHERE student_no = ?");
         ps.setString(1,userModel.strIDFormat);
         tblrs = ps.executeQuery();
     }
 
+    public static void addToApprvTbl() throws SQLException {
+        ps = conn.prepareStatement(
+                "INSERT IGNORE INTO sched_approval" +
+                        " SELECT * FROM sched_register WHERE student_no = ?");
+        ps.setString(1, userModel.strIDFormat);
+        int rowsAffected = ps.executeUpdate();
+
+        if (rowsAffected > 0) {
+            Mainscreen.popDialogue("Please wait for finalization.", "Success", "Schedule successfully registered.");
+        } else {
+            Mainscreen.popDialogue("Duplicate Entry", "Error", "This student has already been scheduled.");
+        }
+    }
+
+    public static void approveSched() throws SQLException{
+        //Insert into enrolled_students
+        ps = conn.prepareStatement(
+                "INSERT INTO enrolled_students (sy, semester, student_no, lastname, firstname, subject_code, student_type) " +
+                        "SELECT sy, semester, student_no, last_name, first_name, subject_code, 'Irregular' AS student_type " +
+                        "FROM sched_approval");
+        ps.execute();
+        //Insert into grades
+        ps = conn.prepareStatement("INSERT INTO grade (sy,semester,student_no,subject_code) " +
+                "SELECT sy, semester, student_no, subject_code FROM sched_approval");
+        ps.execute();
+        //Insert into irreg_student_sched
+        ps = conn.prepareStatement("INSERT INTO irreg_student_sched FROM sched_approval WHERE " +
+                        " student_no = ?");
+        ps.setString(1,userModel.strIDFormat);
+        //Remove from sched_approval
+        ps = conn.prepareStatement("DELETE FROM sched_approval WHERE student_no = ?");
+        ps.setString(1, userModel.strIDFormat);
+        //Remove from sched_register
+        ps = conn.prepareStatement("DELETE FROM sched_register WHERE student_no = ?");
+        ps.setString(1, userModel.strIDFormat);
+    }
+
+    public static void getRegTbl() throws SQLException {
+        ps = conn.prepareStatement("SELECT subject_code, subject_description, day, time, room, type " +
+                "FROM sched_register WHERE student_no = ?");
+        ps.setString(1,userModel.strIDFormat);
+        tblrs = ps.executeQuery();
+    }
 
     public static void addToSched() throws SQLException {
-        ps = conn.prepareStatement("INSERT INTO sched_approval VALUES (?,?,?,?,?,?,?,?,?)");
-        ps.setString(1, userModel.strIDFormat);
-        ps.setString(2, userModel.strLastName);
-        ps.setString(3, userModel.strFirstName);
-        ps.setString(4, strSubjCode);
-        ps.setString(5, strSubjName);
-        ps.setString(6, strDay);
-        ps.setString(7, strTime);
-        ps.setString(8, strRoom);
-        ps.setString(9, strType);
+        ps = conn.prepareStatement("INSERT INTO sched_register VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+        ps.setString(1, tblSY);
+        ps.setString(2, tblSem);
+        ps.setString(3, userModel.strIDFormat);
+        ps.setString(4, userModel.strLastName);
+        ps.setString(5, userModel.strFirstName);
+        ps.setString(6, strSubjCode);
+        ps.setString(7, strSubjName);
+        ps.setString(8, strDay);
+        ps.setString(9, strTime);
+        ps.setString(10, strRoom);
+        ps.setString(11, strType);
         ps.execute();
         Mainscreen.popDialogue("Please see schedule to review changes.", "Success", "Subject successfully registered!");
     }
 
     public static void removeFromSched() throws SQLException{
-        ps = conn.prepareStatement("DELETE FROM sched_approval WHERE student_no = ? AND subject_code = ? " +
+        ps = conn.prepareStatement("DELETE FROM sched_register WHERE student_no = ? AND subject_code = ? " +
                 "AND subject_description = ? AND day = ? AND time = ? AND room = ? AND type = ?");
         ps.setString(1, userModel.strIDFormat);
         ps.setString(2, strSubjCode);
@@ -152,5 +210,11 @@ public class tableModel {
         ps.setString(7, strType);
         ps.execute();
         Mainscreen.popDialogue("Please navigate to REGISTER to add more subjects.", "Success", "Subject successfully removed.");
+    }
+
+    public static void getIrregSchedule() throws SQLException {
+        ps = conn.prepareStatement("SELECT * FROM irreg_student_sched WHERE block = ?");
+        ps.setString(1, userModel.strBlock);
+        tblrs = ps.executeQuery();
     }
 }

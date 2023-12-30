@@ -2,7 +2,6 @@ package com.example.plmcrs;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -28,8 +27,8 @@ public class Mainscreen extends Application {
                 stage.setScene(scene);
                 stage.setResizable(false);
                 stage.show();
-
-        }
+                System.out.print(userModel.currentYear);
+    }
 
         public static void changeScene(String fxmlFileName, String windowTitle) throws IOException {
             FXMLLoader loader = new FXMLLoader(Mainscreen.class.getResource(fxmlFileName));

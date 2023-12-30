@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
@@ -16,7 +17,11 @@ import java.util.ResourceBundle;
 public class studentScheduleController implements Initializable {
 
     @FXML
-    private TableView<ObservableList<String>> approvalTblView;
+    private TableView<ObservableList<String>> tblView;
+    @FXML
+    Button btnRegister;
+    @FXML
+    Button btnRemove;
     @FXML
     private Label lblSched;
     @FXML
@@ -34,31 +39,51 @@ public class studentScheduleController implements Initializable {
 
 
     @FXML
-    void registerSched(ActionEvent event) {
-
+    void registerSched(ActionEvent event) throws SQLException {
+        tableModel.addToApprvTbl();
     }
 
     @FXML
     void removeSched(ActionEvent event) throws SQLException {
-        tableModel.strSubjCode = approvalTblView.getSelectionModel().getSelectedItem().get(0);
-        tableModel.strSubjName = approvalTblView.getSelectionModel().getSelectedItem().get(1);
-        tableModel.strDay = approvalTblView.getSelectionModel().getSelectedItem().get(2);
-        tableModel.strTime = approvalTblView.getSelectionModel().getSelectedItem().get(3);
-        tableModel.strRoom = approvalTblView.getSelectionModel().getSelectedItem().get(4);
-        tableModel.strType = approvalTblView.getSelectionModel().getSelectedItem().get(5);
+        tableModel.strSubjCode = tblView.getSelectionModel().getSelectedItem().get(0);
+        tableModel.strSubjName = tblView.getSelectionModel().getSelectedItem().get(1);
+        tableModel.strDay = tblView.getSelectionModel().getSelectedItem().get(2);
+        tableModel.strTime = tblView.getSelectionModel().getSelectedItem().get(3);
+        tableModel.strRoom = tblView.getSelectionModel().getSelectedItem().get(4);
+        tableModel.strType = tblView.getSelectionModel().getSelectedItem().get(5);
         tableModel.removeFromSched();
-        tableModel.getApprvTbl();
-        tableModel.resultSetToTableView(tableModel.tblrs, approvalTblView);
+        tableModel.getRegTbl();
+        tableModel.resultSetToTableView(tableModel.tblrs, tblView);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lblStdntNum.setText(userModel.strIDFormat);
-        try {
-            tableModel.getApprvTbl();
-            tableModel.resultSetToTableView(tableModel.tblrs, approvalTblView);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        switch (userModel.strStdntType) {
+            case "Regular":
+                try {
+                    tableModel.getSchedule();
+                    tableModel.resultSetToTableView(tableModel.tblrs, tblView);
+                    btnRegister.setDisable(true);
+                    btnRemove.setDisable(true);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            case "Irregular":
+                try {
+                    if (userModel.hasExistingSchedule()) {
+                        tableModel.getIrregSchedule();
+                        tableModel.resultSetToTableView(tableModel.tblrs, tblView);
+                    } else {
+                        tableModel.getRegTbl();
+                        tableModel.resultSetToTableView(tableModel.tblrs, tblView);
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
         }
     }
 }

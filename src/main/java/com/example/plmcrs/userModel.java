@@ -2,20 +2,21 @@
 
     import java.io.IOException;
     import java.sql.*;
-
-    import static java.lang.Integer.parseInt;
-    import static java.lang.Integer.valueOf;
+    import java.time.LocalDate;
+    import java.time.format.DateTimeFormatter;
 
     public class userModel {
 
         //User Model Variables
         static String strName, strEmail, strFirstName, strLastName, strAge, strGender, strContact,
-                strBirthdate, strID, strAddress, strCourse, strIDFormat, strSY, strCourseFormat, strYr, strFreshmanYr;
-        static int currentYear = 2025;
-
+                strBirthdate, strBlock, strID, strAddress, strCourse, strIDFormat, strSY, strCourseFormat,
+                strYr, strFreshmanYr, strStdntType, strStatus;
 
         //Login Variables
-        static String strUsername = null, strPassword = null;
+        public static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        public static LocalDate currentDate = LocalDate.now();
+        static String strUsername = null, strPassword = null, strDate = currentDate.format(dateFormatter);
+        static String currentYear = strDate.substring(0,4);
 
 
         //Database setup
@@ -81,31 +82,84 @@
 
         // Label setters for student dashboard
         private static void fetchStudentInfo() throws SQLException {
-            try (PreparedStatement studentPs = conn.prepareStatement("SELECT * FROM student WHERE student_no = ?")) {
-                studentPs.setString(1, strIDFormat);
+            try {
+                ps = conn.prepareStatement("SELECT * FROM student WHERE student_no = ?");
+                ps.setString(1, strIDFormat);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    strEmail = rs.getString("EMAIL");
+                    strFirstName = rs.getString("FIRSTNAME");
+                    strLastName = rs.getString("LASTNAME");
+                    strName = strFirstName + " " + strLastName;
+                    strAge = rs.getString("AGE");
+                    strGender = rs.getString("GENDER");
+                    strContact = rs.getString("CP_NUM");
+                    strBirthdate = rs.getString("BDAY");
+                    strAddress = rs.getString("ADDRESS");
+                    strCourse = rs.getString("COURSE_CODE");
+                    strCourseFormat = strCourse.substring(2, 4) + "%";
+                    strFreshmanYr = strID.substring(0, 4);
+                    strYr = String.valueOf(Integer.valueOf(currentYear) - Integer.valueOf(strFreshmanYr));
+                }
+                ps = conn.prepareStatement("SELECT CASE " +
+                        "WHEN EXISTS (SELECT 1 FROM grade WHERE student_no = ? AND grade = 5) THEN 'Irregular' " +
+                        "ELSE 'Regular' " +
+                        "END AS student_type");
+                ps.setString(1,strIDFormat);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    strStdntType = rs.getString("student_type");
+                } else {
+                    System.out.println("Student not found.");
+                }
 
-                try (ResultSet studentRs = studentPs.executeQuery()) {
-                    while (studentRs.next()) {
-                        strEmail = studentRs.getString("EMAIL");
-                        strFirstName = studentRs.getString("FIRSTNAME");
-                        strLastName = studentRs.getString("LASTNAME");
-                        strName = strFirstName + " " + strLastName;
-                        strAge = studentRs.getString("AGE");
-                        strGender = studentRs.getString("GENDER");
-                        strContact = studentRs.getString("CP_NUM");
-                        strBirthdate = studentRs.getString("BDAY");
-                        strAddress = studentRs.getString("ADDRESS");
-                        strCourse = studentRs.getString("COURSE_CODE");
-                        strCourseFormat = strCourse.substring(2, 4) + "%";
-                        strFreshmanYr = strID.substring(0,4);
-                        strYr = String.valueOf(currentYear-Integer.valueOf(strFreshmanYr));
+                if (strStdntType.equals("Regular")){
+                    ps = conn.prepareStatement("SELECT * FROM vwstudentlist WHERE student_no = ?");
+                    ps.setString(1, strIDFormat);
+                    rs = ps.executeQuery();
+                    if (rs.next()) {
+                        strBlock = rs.getString("BLOCK_NO");
+                    } else {
+                        System.out.println("Student not found.");
                     }
                 }
+
+            } catch (SQLException | NumberFormatException e) {
+                throw new RuntimeException(e);
             }
         }
 
+
         //Label setters for admin dashboard
         private static void fetchAdminInfo() throws SQLException {
+            try {
+                ps = conn.prepareStatement("SELECT * FROM employee WHERE employee_id = ?");
+                ps.setString(1,strID);
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    strEmail = rs.getString("EMAIL");
+                    strFirstName= rs.getString("FIRSTNAME");
+                    strLastName = rs.getString("LASTNAME");
+                    strName = strLastName + ", " + strFirstName;
+                    strGender = rs.getString("GENDER");
+                    strBirthdate = rs.getString("BDAY");
+                    strAddress = rs.getString("ADDRESS");
+                    strContact = rs.getString("CP_NUM");
+                    strStatus = rs.getString("STATUS");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //Checks if the Irregular Student has an Existing Schedule
+        public static boolean hasExistingSchedule() throws SQLException {
+            ps = conn.prepareStatement("SELECT COUNT(*) FROM irreg_student_sched WHERE student_no = ?");
+            ps.setString(1, userModel.strIDFormat);
+            tableModel.tblrs = ps.executeQuery();
+            tableModel.tblrs.next();
+            int count = tableModel.tblrs.getInt(1);
+            return count > 0;
         }
 
 

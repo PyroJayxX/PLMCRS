@@ -11,9 +11,8 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="0.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plmcrs.studentScheduleController">
+<AnchorPane prefHeight="0.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plmcrs.adminSchedApprovalController">
    <children>
       <ImageView fitWidth="1000.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -28,22 +27,17 @@
                   <Image url="@../../../PLMLogo.png" />
                </image>
             </ImageView>
-            <Label layoutX="695.0" layoutY="31.0" text="Logged in as Student No." textFill="#ed3c3c">
+            <Label layoutX="695.0" layoutY="31.0" text="Logged in as Employee No." textFill="#ed3c3c">
                <font>
                   <Font name="System Bold" size="11.0" />
                </font>
             </Label>
-            <Label layoutX="695.0" layoutY="50.0" text="Today is" textFill="#227f19">
+            <Label fx:id="lblDate" layoutX="695.0" layoutY="50.0" text="Today is" textFill="#227f19">
                <font>
                   <Font name="System Bold" size="11.0" />
                </font>
             </Label>
-            <Text fill="#277f19" layoutX="739.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Tuesday, Dec 12, 2023">
-               <font>
-                  <Font name="System Bold" size="11.0" />
-               </font>
-            </Text>
-            <Label fx:id="lblStdntNum" layoutX="829.0" layoutY="31.0" text="2022-00000">
+            <Label fx:id="lblID" layoutX="840.0" layoutY="32.0" text="2022-00000">
                <font>
                   <Font name="System Bold" size="11.0" />
                </font>
@@ -53,32 +47,12 @@
       <AnchorPane layoutY="102.0" prefHeight="576.0" prefWidth="136.0" style="-fx-background-color: #9C0000; -fx-opacity: 75%;">
          <children>
             <Circle fill="#ffbf00" layoutX="68.0" layoutY="57.0" radius="35.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
-            <ImageView fitWidth="63.0" layoutX="37.0" layoutY="146.0" onMouseClicked="#toRegister" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../Register.png" />
-               </image>
-            </ImageView>
-            <ImageView fitWidth="50.0" layoutX="44.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../Tuition.png" />
-               </image>
-            </ImageView>
-            <ImageView fitWidth="65.0" layoutX="35.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../Schedule.png" />
-               </image>
-            </ImageView>
-            <ImageView fitWidth="50.0" layoutX="42.0" layoutY="374.0" onMouseClicked="#toGrades" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../Grades.png" />
-               </image>
-            </ImageView>
             <Button layoutX="27.0" layoutY="484.0" mnemonicParsing="false" style="-fx-background-color: #00000000;" text="Log out" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
-            <Label layoutX="28.0" layoutY="102.0" onMouseClicked="#toStdntDashboard" text="Dashboard" textFill="WHITE">
+            <Label layoutX="28.0" layoutY="102.0" onMouseClicked="#toAdminDashboard" text="Dashboard" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -88,11 +62,14 @@
                   <Image url="@../../../defaulticon.png" />
                </image>
             </ImageView>
+            <Button layoutX="27.0" layoutY="154.0" mnemonicParsing="false" text="Student List" />
+            <Button layoutX="11.0" layoutY="209.0" mnemonicParsing="false" onAction="#toSchedApproval" text="Schedule Approval" />
+            <Button layoutX="17.0" layoutY="260.0" mnemonicParsing="false" onAction="#toDBEditor" text="Database Editor" />
          </children></AnchorPane>
       <AnchorPane layoutX="152.0" layoutY="113.0" prefHeight="558.0" prefWidth="833.0">
          <children>
             <Rectangle arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="542.0" layoutX="20.0" layoutY="5.0" opacity="0.8" stroke="TRANSPARENT" strokeType="INSIDE" width="791.0" />
-            <Label fx:id="lblSched" layoutX="264.0" layoutY="23.0" text="Subjects for Approval" textFill="#9c0000e5">
+            <Label layoutX="252.0" layoutY="23.0" text="Schedules for Approval" textFill="#9c0000e5">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font></Label>
@@ -102,17 +79,17 @@
                </image>
             </ImageView>
             <Line endX="600.0" layoutX="164.0" layoutY="76.0" startX="-100.0" stroke="#9c0000" />
-            <TableView fx:id="tblView" layoutX="75.0" layoutY="100.0" prefHeight="352.0" prefWidth="680.0" styleClass="column-header">
+            <TableView fx:id="tblStdntList" layoutX="75.0" layoutY="100.0" prefHeight="352.0" prefWidth="680.0" styleClass="column-header">
                <stylesheets>
                   <URL value="@Style.css" />
                </stylesheets>
             </TableView>
-            <Button fx:id="btnRemove" layoutX="258.0" layoutY="475.0" mnemonicParsing="false" onAction="#removeSched" prefHeight="31.0" prefWidth="118.0" style="-fx-background-color: #B9122C; -fx-border-color: white; -fx-background-radius: 10; -fx-border-radius: 10;" text="REMOVE" textFill="WHITE">
+            <Button layoutX="258.0" layoutY="475.0" mnemonicParsing="false" onAction="#dropStdnt" prefHeight="31.0" prefWidth="118.0" style="-fx-background-color: #B9122C; -fx-border-color: white; -fx-background-radius: 10; -fx-border-radius: 10;" text="DROP" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnRegister" layoutX="455.0" layoutY="475.0" mnemonicParsing="false" onAction="#registerSched" prefHeight="31.0" prefWidth="118.0" style="-fx-background-color: #32A826; -fx-border-color: white; -fx-background-radius: 10; -fx-border-radius: 10;" text="REGISTER" textFill="WHITE">
+            <Button layoutX="455.0" layoutY="475.0" mnemonicParsing="false" onAction="#addStdnt" prefHeight="31.0" prefWidth="118.0" style="-fx-background-color: #32A826; -fx-border-color: white; -fx-background-radius: 10; -fx-border-radius: 10;" text="ADD" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
