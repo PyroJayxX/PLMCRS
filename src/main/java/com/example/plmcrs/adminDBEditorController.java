@@ -12,6 +12,10 @@ public class adminDBEditorController {
     Label lblID;
     @FXML
     Label lblDate;
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        userModel.logOutUser();
+    }
 
     public void toAdminDashboard(MouseEvent event) throws IOException {
         Mainscreen.changeScene("adminDashboard.fxml","Admin Dashboard");

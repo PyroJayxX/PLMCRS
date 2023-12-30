@@ -132,7 +132,7 @@ public class tableModel {
 
     public static void getApprvTbl() throws SQLException {
         ps = conn.prepareStatement("SELECT subject_code, subject_description, day, time, room, type " +
-                "FROM sched_register WHERE student_no = ?");
+                "FROM sched_approval WHERE student_no = ?");
         ps.setString(1,userModel.strIDFormat);
         tblrs = ps.executeQuery();
     }
@@ -151,27 +151,58 @@ public class tableModel {
         }
     }
 
-    public static void approveSched() throws SQLException{
-        //Insert into enrolled_students
-        ps = conn.prepareStatement(
-                "INSERT INTO enrolled_students (sy, semester, student_no, lastname, firstname, subject_code, student_type) " +
-                        "SELECT sy, semester, student_no, last_name, first_name, subject_code, 'Irregular' AS student_type " +
-                        "FROM sched_approval");
-        ps.execute();
-        //Insert into grades
-        ps = conn.prepareStatement("INSERT INTO grade (sy,semester,student_no,subject_code) " +
-                "SELECT sy, semester, student_no, subject_code FROM sched_approval");
-        ps.execute();
-        //Insert into irreg_student_sched
-        ps = conn.prepareStatement("INSERT INTO irreg_student_sched FROM sched_approval WHERE " +
-                        " student_no = ?");
-        ps.setString(1,userModel.strIDFormat);
+    public static void approveSched() {
+        try {
+            conn.setAutoCommit(false); // Start transaction
+
+            // Insert into enrolled_students
+            ps = conn.prepareStatement("INSERT INTO enrolled_students (sy, semester, student_no, lastname, firstname, subject_code, student_type) " +
+                    "SELECT sy, semester, student_no, last_name, first_name, subject_code, 'Irregular' AS student_type FROM sched_approval WHERE student_no = ?");
+            ps.setString(1, userModel.strIDFormat);
+            ps.execute();
+
+            // Insert into grades
+            ps = conn.prepareStatement("INSERT INTO grade (sy,semester,student_no,subject_code) " +
+                    "SELECT sy, semester, student_no, subject_code FROM sched_approval WHERE student_no = ?");
+            ps.setString(1, userModel.strIDFormat);
+            ps.execute();
+
+            // Insert into irreg_student_sched
+            ps = conn.prepareStatement("INSERT INTO irreg_student_sched SELECT * FROM sched_approval WHERE student_no = ?");
+            ps.setString(1, userModel.strIDFormat);
+            ps.execute();
+
+            conn.commit(); // If everything is successful, commit the transaction
+            Mainscreen.popDialogue("Schedule was successfully approved.", "Success!", "Schedule added to the database.");
+        } catch (SQLException e) {
+            try {
+                conn.rollback(); // Roll back the transaction if there is an exception
+            } catch (SQLException rollbackException) {
+                rollbackException.printStackTrace();
+            }
+            e.printStackTrace(); // Handle or log the exception
+        } finally {
+            try {
+                conn.setAutoCommit(true); // Set auto-commit to true to return to default behavior
+            } catch (SQLException autoCommitException) {
+                autoCommitException.printStackTrace();
+            }
+        }
+    }
+
+
+    public static void declineSched() throws SQLException {
         //Remove from sched_approval
         ps = conn.prepareStatement("DELETE FROM sched_approval WHERE student_no = ?");
         ps.setString(1, userModel.strIDFormat);
+        ps.execute();
+
         //Remove from sched_register
         ps = conn.prepareStatement("DELETE FROM sched_register WHERE student_no = ?");
         ps.setString(1, userModel.strIDFormat);
+        ps.execute();
+
+        Mainscreen.popDialogue("Schedule was successfully declined.", "Success!", "Schedule omitted.");
     }
 
     public static void getRegTbl() throws SQLException {

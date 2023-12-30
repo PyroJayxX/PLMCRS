@@ -23,7 +23,10 @@ public class studentRegisterController implements Initializable {
     private TextField txtSearch;
     @FXML
     private TableView<ObservableList<String>> subjectTblView;
-
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        userModel.logOutUser();
+    }
     public void toStdntDashboard(MouseEvent event) throws IOException {
         Mainscreen.changeScene("studentDashboard.fxml","Dashboard");
     }

@@ -15,36 +15,31 @@ public class adminDashboardController implements Initializable {
     private Label lblID;
     @FXML
     private Label lblAddress;
-
     @FXML
     private Label lblBirthdate;
-
     @FXML
     private Label lblContact;
-
     @FXML
     private Label lblDate;
-
     @FXML
     private Label lblEmail;
-
     @FXML
     private Label lblEmployeeID;
-
     @FXML
     private Label lblFirstName;
-
     @FXML
     private Label lblGender;
-
     @FXML
     private Label lblLastName;
-
     @FXML
     private Label lblName;
-
     @FXML
     private Label lblStatus;
+
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        userModel.logOutUser();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -61,9 +56,6 @@ public class adminDashboardController implements Initializable {
 
         lblDate.setText("Today is  " + userModel.strDate);
         lblID.setText(userModel.strID);
-    }
-
-    public void logout(ActionEvent event) {
     }
 
     public void toStdntList(ActionEvent event) throws IOException {

@@ -1,5 +1,6 @@
 package com.example.plmcrs;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -41,6 +42,10 @@ public class studentDashboardController implements Initializable {
     Label lblDate;
     @FXML
     Label lblStdntType;
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        userModel.logOutUser();
+    }
 
 
     public void toGrades(MouseEvent event) throws IOException {

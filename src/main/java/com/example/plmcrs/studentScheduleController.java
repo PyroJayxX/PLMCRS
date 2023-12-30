@@ -26,7 +26,10 @@ public class studentScheduleController implements Initializable {
     private Label lblSched;
     @FXML
     private Label lblStdntNum;
-
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        userModel.logOutUser();
+    }
     public void toStdntDashboard(MouseEvent event) throws IOException {
         Mainscreen.changeScene("studentDashboard.fxml","Dashboard");
     }
@@ -63,6 +66,7 @@ public class studentScheduleController implements Initializable {
         switch (userModel.strStdntType) {
             case "Regular":
                 try {
+                    lblSched.setText("Schedule");
                     tableModel.getSchedule();
                     tableModel.resultSetToTableView(tableModel.tblrs, tblView);
                     btnRegister.setDisable(true);

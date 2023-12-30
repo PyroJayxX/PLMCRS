@@ -33,7 +33,10 @@ public class adminSchedApprovalController implements Initializable {
     @FXML
     Button btnDecline;
 
-
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        userModel.logOutUser();
+    }
     public void toAdminDashboard(MouseEvent event) throws IOException {
         Mainscreen.changeScene("adminDashboard.fxml","Admin Dashboard");
     }
@@ -49,22 +52,44 @@ public class adminSchedApprovalController implements Initializable {
         Mainscreen.changeScene("adminDBEditor.fxml","Database Editor");
     }
 
-    public void approveSched(ActionEvent event) {
+    public void approveSched(ActionEvent event) throws SQLException {
+        tableModel.approveSched();
+        //Reload Table
+        tableModel.getApprvTblStdntList();
+        tableModel.resultSetToTableView(tableModel.tblrs, tblView);
 
     }
 
-    public void declineSched(ActionEvent event) {
-
+    public void declineSched(ActionEvent event) throws SQLException {
+        tableModel.declineSched();
+        //Reload Table
+        tableModel.getApprvTblStdntList();
+        tableModel.resultSetToTableView(tableModel.tblrs, tblView);
     }
 
     public void tblClick(MouseEvent event){
-        txtStudentNo.setText(tblView.getSelectionModel().getSelectedItem().get(1));
-        userModel.strIDFormat = txtStudentNo.getText();
+        txtStudentNo.setText(tblView.getSelectionModel().getSelectedItem().get(0));
     }
 
     public void searchStudent(ActionEvent event) throws SQLException {
         userModel.strIDFormat = txtStudentNo.getText();
         tableModel.getApprvTbl();
+        tableModel.resultSetToTableView(tableModel.tblrs, tblView);
+        btnApprove.setDisable(false);
+        btnDecline.setDisable(false);
+        lblBack.setVisible(true);
+        lblPrompt.setVisible(false);
+        txtStudentNo.setVisible(false);
+        tblView.setDisable(false);
+    }
+
+    public void back(MouseEvent event) throws SQLException{
+        btnApprove.setDisable(true);
+        btnDecline.setDisable(true);
+        lblBack.setVisible(false);
+        lblPrompt.setVisible(true);
+        txtStudentNo.setVisible(true);
+        tableModel.getApprvTblStdntList();
         tableModel.resultSetToTableView(tableModel.tblrs, tblView);
     }
 

@@ -47,7 +47,7 @@
       <AnchorPane layoutY="102.0" prefHeight="576.0" prefWidth="136.0" style="-fx-background-color: #9C0000; -fx-opacity: 75%;">
          <children>
             <Circle fill="#ffbf00" layoutX="68.0" layoutY="57.0" radius="35.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
-            <Button layoutX="27.0" layoutY="484.0" mnemonicParsing="false" style="-fx-background-color: #00000000;" text="Log out" textFill="WHITE">
+            <Button layoutX="27.0" layoutY="484.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: #00000000;" text="Log out" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

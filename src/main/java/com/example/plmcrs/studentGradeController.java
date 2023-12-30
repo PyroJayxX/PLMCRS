@@ -22,6 +22,10 @@ public class studentGradeController implements Initializable {
     TableView<ObservableList<String>> gradeTblView;
     @FXML
     private ComboBox<String> cmbGrade;
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        userModel.logOutUser();
+    }
 
     public void toStdntDashboard(MouseEvent event) throws IOException {
         Mainscreen.changeScene("studentDashboard.fxml","Dashboard");

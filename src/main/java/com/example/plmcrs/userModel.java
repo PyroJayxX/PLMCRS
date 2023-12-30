@@ -26,7 +26,7 @@
 
 
         //Clears user's information from all local variables upon log out
-        public static void logOutUser() {
+        public static void logOutUser() throws IOException {
             strName = null;
             strFirstName = null;
             strLastName = null;
@@ -39,6 +39,17 @@
             strCourse = null;
             strCourseFormat = null;
             strSY = null;
+            strIDFormat = null;
+            strFreshmanYr = null;
+            strBlock = null;
+            strYr = null;
+            strStdntType = null;
+            strStatus = null;
+            strUsername = null;
+            strPassword = null;
+            strDate = null;
+            currentYear = null;
+            Mainscreen.changeScene("login.fxml", "Login");
         }
 
         //Username and Password Checker
