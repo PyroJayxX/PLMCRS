@@ -47,10 +47,14 @@ public class studentDashboardController implements Initializable {
         userModel.logOutUser();
     }
 
-
     public void toGrades(MouseEvent event) throws IOException {
         Mainscreen.changeScene("studentGrade.fxml","Grades");
     }
+
+    public void toSchedule(MouseEvent event) throws IOException {
+        Mainscreen.changeScene("studentSchedule.fxml", "Schedule");
+    }
+
     public void toRegister(MouseEvent event) throws IOException {
         switch(userModel.strStdntType) {
             case "Regular":
@@ -60,9 +64,6 @@ public class studentDashboardController implements Initializable {
                 Mainscreen.changeScene("studentRegister.fxml","Register subjects");
                 break;
         }
-    }
-    public void toSchedule(MouseEvent event) throws IOException {
-        Mainscreen.changeScene("studentSchedule.fxml", "Schedule");
     }
 
 

@@ -33,11 +33,20 @@ public class studentScheduleController implements Initializable {
     public void toStdntDashboard(MouseEvent event) throws IOException {
         Mainscreen.changeScene("studentDashboard.fxml","Dashboard");
     }
-    public void toRegister(MouseEvent event) throws IOException {
-        Mainscreen.changeScene("studentRegister.fxml","Register subjects");
-    }
+
     public void toGrades(MouseEvent event) throws IOException {
         Mainscreen.changeScene("studentGrade.fxml","Grades");
+    }
+
+    public void toRegister(MouseEvent event) throws IOException {
+        switch(userModel.strStdntType) {
+            case "Regular":
+                Mainscreen.popDialogue("You are already enrolled!", "Error.", "Cannot register right now.");
+                break;
+            case "Irregular":
+                Mainscreen.changeScene("studentRegister.fxml","Register subjects");
+                break;
+        }
     }
 
 
