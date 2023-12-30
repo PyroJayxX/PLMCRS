@@ -1,0 +1,15 @@
+.table-view {
+    -fx-background-radius: 10;
+}
+
+.table-view .column-header {
+    -fx-background-color: #7C191B;
+}
+
+.table-view .label {
+    -fx-text-fill: white;
+}
+
+.scroll-bar .thumb{
+    -fx-background-color: #A0A0A0;
+}
