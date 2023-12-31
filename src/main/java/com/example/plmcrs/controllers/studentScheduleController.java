@@ -1,5 +1,8 @@
-package com.example.plmcrs;
+package com.example.plmcrs.controllers;
 
+import com.example.plmcrs.Mainscreen;
+import com.example.plmcrs.models.tableModel;
+import com.example.plmcrs.models.userModel;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -75,7 +78,7 @@ public class studentScheduleController implements Initializable {
         switch (userModel.strStdntType) {
             case "Regular":
                 try {
-                    lblSched.setText("Schedule");
+                    lblSched.setText("Your Schedule");
                     tableModel.getSchedule();
                     tableModel.resultSetToTableView(tableModel.tblrs, tblView);
                     btnRegister.setDisable(true);

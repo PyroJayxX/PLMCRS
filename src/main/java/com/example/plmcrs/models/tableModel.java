@@ -1,5 +1,6 @@
-package com.example.plmcrs;
+package com.example.plmcrs.models;
 
+import com.example.plmcrs.Mainscreen;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,7 @@ import java.sql.*;
 public class tableModel {
 
     //TableView Variables
-    static String strSearch="%", strSubjCode, strSubjName, strBlock,
+    public static String strSearch="%", strSubjCode, strSubjName, strBlock,
             strDay, strTime, strRoom, strType, tblSY, tblSem;
 
     //Database setup
@@ -32,7 +33,7 @@ public class tableModel {
 
     private static PreparedStatement ps = null;
 
-    static ResultSet tblrs = null;
+    public static ResultSet tblrs = null;
 
     public static void resultSetToTableView(ResultSet rs, TableView<ObservableList<String>> tableView) throws SQLException {
         try {

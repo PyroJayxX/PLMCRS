@@ -1,5 +1,8 @@
-package com.example.plmcrs;
+package com.example.plmcrs.controllers;
 
+import com.example.plmcrs.Mainscreen;
+import com.example.plmcrs.models.tableModel;
+import com.example.plmcrs.models.userModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

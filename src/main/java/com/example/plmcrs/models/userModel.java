@@ -1,4 +1,6 @@
-    package com.example.plmcrs;
+    package com.example.plmcrs.models;
+
+    import com.example.plmcrs.Mainscreen;
 
     import java.io.IOException;
     import java.sql.*;
@@ -8,15 +10,15 @@
     public class userModel {
 
         //User Model Variables
-        static String strName, strEmail, strFirstName, strLastName, strAge, strGender, strContact,
+        public static String strName, strEmail, strFirstName, strLastName, strAge, strGender, strContact,
                 strBirthdate, strBlock, strID, strAddress, strCourse, strIDFormat, strSY, strCourseFormat,
                 strYr, strFreshmanYr, strStdntType, strStatus;
 
         //Login Variables
         public static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         public static LocalDate currentDate = LocalDate.now();
-        static String strUsername = null, strPassword = null, strDate = currentDate.format(dateFormatter);
-        static String currentYear = strDate.substring(0,4);
+        public static String strUsername = null, strPassword = null, strDate = currentDate.format(dateFormatter);
+        public static String currentYear = strDate.substring(0,4);
 
 
         //Database setup
@@ -47,8 +49,6 @@
             strStatus = null;
             strUsername = null;
             strPassword = null;
-            strDate = null;
-            currentYear = null;
             Mainscreen.changeScene("login.fxml", "Login");
         }
 

@@ -12,11 +12,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="0.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plmcrs.adminDBEditorController">
+<AnchorPane prefHeight="0.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plmcrs.controllers.adminDBEditorController">
    <children>
       <ImageView fitWidth="1000.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../PLMEveningImage.png" />
+            <Image url="@../../../imgs/PLMEveningImage.png" />
          </image>
       </ImageView>
       <Rectangle fill="#fabe25" height="7.0" layoutY="95.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
@@ -24,7 +24,7 @@
          <children>
             <ImageView fitHeight="57.0" fitWidth="252.0" layoutX="54.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../PLMLogo.png" />
+                  <Image url="@../../../imgs/PLMLogo.png" />
                </image>
             </ImageView>
             <Label layoutX="695.0" layoutY="31.0" text="Logged in as Employee No." textFill="#ed3c3c">
@@ -59,7 +59,7 @@
             </Label>
             <ImageView fitHeight="64.0" fitWidth="65.0" layoutX="36.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../defaulticon.png" />
+                  <Image url="@../../../imgs/defaulticon.png" />
                </image>
             </ImageView>
             <Button layoutX="27.0" layoutY="154.0" mnemonicParsing="false" onAction="#toStdntList" text="Student List" />
@@ -75,7 +75,7 @@
                </font></Label>
             <ImageView fitHeight="57.0" fitWidth="50.0" layoutX="72.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../clipboardicon.png" />
+                  <Image url="@../../../imgs/clipboardicon.png" />
                </image>
             </ImageView>
             <Line endX="600.0" layoutX="164.0" layoutY="76.0" startX="-100.0" stroke="#9c0000" />

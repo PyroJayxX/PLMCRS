@@ -1,5 +1,6 @@
-package com.example.plmcrs;
+package com.example.plmcrs.controllers;
 
+import com.example.plmcrs.models.userModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

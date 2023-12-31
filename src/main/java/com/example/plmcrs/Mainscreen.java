@@ -1,5 +1,6 @@
 package com.example.plmcrs;
 
+import com.example.plmcrs.models.userModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

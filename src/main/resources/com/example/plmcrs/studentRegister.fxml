@@ -13,11 +13,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="0.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plmcrs.studentRegisterController">
+<AnchorPane prefHeight="0.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plmcrs.controllers.studentRegisterController">
    <children>
       <ImageView fitWidth="1000.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../PLMEveningImage.png" />
+            <Image url="@../../../imgs/PLMEveningImage.png" />
          </image>
       </ImageView>
       <Rectangle fill="#fabe25" height="7.0" layoutY="95.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
@@ -25,7 +25,7 @@
          <children>
             <ImageView fitHeight="57.0" fitWidth="252.0" layoutX="54.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../PLMLogo.png" />
+                  <Image url="@../../../imgs/PLMLogo.png" />
                </image>
             </ImageView>
             <Label layoutX="695.0" layoutY="31.0" text="Logged in as Student No." textFill="#ed3c3c">
@@ -50,25 +50,25 @@
             <Circle fill="#ffbf00" layoutX="68.0" layoutY="57.0" radius="35.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
             <ImageView fitWidth="63.0" layoutX="37.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../Register.png" />
+                  <Image url="@../../../imgs/Register.png" />
                </image>
             </ImageView>
             <ImageView fitWidth="50.0" layoutX="44.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../Tuition.png" />
+                  <Image url="@../../../imgs/Tuition.png" />
                </image>
             </ImageView>
             <ImageView fitWidth="65.0" layoutX="35.0" layoutY="228.0" onMouseClicked="#toSchedule" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../Schedule.png" />
+                  <Image url="@../../../imgs/Schedule.png" />
                </image>
             </ImageView>
             <ImageView fitWidth="50.0" layoutX="42.0" layoutY="374.0" onMouseClicked="#toGrades" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../Grades.png" />
+                  <Image url="@../../../imgs/Grades.png" />
                </image>
             </ImageView>
-            <Button layoutX="27.0" layoutY="484.0" mnemonicParsing="false" style="-fx-background-color: #00000000;" text="Log out" textFill="WHITE">
+            <Button layoutX="27.0" layoutY="484.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: #00000000;" text="Log out" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -80,7 +80,7 @@
             </Label>
             <ImageView fitHeight="64.0" fitWidth="65.0" layoutX="36.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../defaulticon.png" />
+                  <Image url="@../../../imgs/defaulticon.png" />
                </image>
             </ImageView>
          </children></AnchorPane>
@@ -93,7 +93,7 @@
                </font></Label>
             <ImageView fitHeight="57.0" fitWidth="50.0" layoutX="72.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../clipboardicon.png" />
+                  <Image url="@../../../imgs/clipboardicon.png" />
                </image>
             </ImageView>
             <Line endX="600.0" layoutX="164.0" layoutY="76.0" startX="-100.0" stroke="#9c0000" />
